@@ -1,0 +1,27 @@
+import random
+import string
+
+def generate_key():
+    letters = list(string.ascii_uppercase)
+    shuffled = letters[:]
+    random.shuffle(shuffled)
+    return dict(zip(letters, shuffled)), dict(zip(shuffled, letters))
+
+def encrypt(text, key):
+    return ''.join(key.get(char, char) for char in text.upper())
+
+def decrypt(text, reverse_key):
+    return ''.join(reverse_key.get(char, char) for char in text.upper())
+
+def main():
+    key, reverse_key = generate_key()
+    text = input("Enter text to encrypt: ")
+    
+    encrypted_text = encrypt(text, key)
+    print("Encrypted text:", encrypted_text)
+    
+    decrypted_text = decrypt(encrypted_text, reverse_key)
+    print("Decrypted text:", decrypted_text)
+
+if __name__ == "__main__":
+    main()
