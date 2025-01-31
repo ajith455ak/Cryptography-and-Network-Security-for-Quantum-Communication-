@@ -1,0 +1,61 @@
+import string
+from collections import Counter
+
+# Function to perform frequency analysis
+def frequency_analysis(ciphertext):
+    # Remove any non-alphabet characters (e.g., spaces, punctuation)
+    ciphertext = ''.join(filter(str.isalpha, ciphertext)).lower()
+
+    # Count the frequency of each letter
+    letter_counts = Counter(ciphertext)
+
+    # Sort the letters by frequency (most common first)
+    sorted_counts = letter_counts.most_common()
+
+    return sorted_counts
+
+# Function to map most frequent letters to common English letters (e, t, h...)
+def map_frequent_letters(frequencies):
+    common_english_letters = ['e', 't', 'a', 'o', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'u', 'c', 'm', 'f', 'y', 'p', 'b', 'g', 'v', 'k', 'x', 'j', 'q', 'z']
+
+    letter_mapping = {}
+    
+    for i, (letter, count) in enumerate(frequencies):
+        if i < len(common_english_letters):
+            letter_mapping[letter] = common_english_letters[i]
+    
+    return letter_mapping
+
+# Function to decrypt the message based on the letter mapping
+def decrypt_message(ciphertext, letter_mapping):
+    decrypted_message = ''
+    for char in ciphertext:
+        if char.isalpha():
+            decrypted_message += letter_mapping.get(char.lower(), char)
+        else:
+            decrypted_message += char  # Keep non-alphabetic characters the same
+    return decrypted_message
+
+# Example Ciphertext (you can replace it with your ciphertext)
+ciphertext = "yourciphertextgoeshere"
+
+# Step 1: Perform frequency analysis
+frequencies = frequency_analysis(ciphertext)
+
+# Step 2: Map frequent letters to common English letters
+letter_mapping = map_frequent_letters(frequencies)
+
+# Step 3: Decrypt the message
+decrypted_message = decrypt_message(ciphertext, letter_mapping)
+
+# Display results
+print("Letter Frequency Analysis:")
+for letter, count in frequencies:
+    print(f"{letter}: {count}")
+    
+print("\nLetter Mapping (most common letters to 'e', 't', 'h'...):")
+for letter, mapped_letter in letter_mapping.items():
+    print(f"{letter} -> {mapped_letter}")
+
+print("\nDecrypted Message:")
+print(decrypted_message)
