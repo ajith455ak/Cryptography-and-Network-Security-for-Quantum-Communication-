@@ -1,0 +1,28 @@
+import string
+
+def generate_cipher_alphabet(keyword):
+    keyword = "".join(dict.fromkeys(keyword.upper()))  # Remove duplicates while maintaining order
+    alphabet = string.ascii_uppercase
+    remaining_letters = "".join([ch for ch in alphabet if ch not in keyword])
+    cipher_alphabet = keyword + remaining_letters
+    return dict(zip(alphabet, cipher_alphabet)), dict(zip(cipher_alphabet, alphabet))
+
+def encrypt(plaintext, cipher_map):
+    plaintext = plaintext.upper()
+    return "".join(cipher_map.get(ch, ch) for ch in plaintext)
+
+def decrypt(ciphertext, decipher_map):
+    ciphertext = ciphertext.upper()
+    return "".join(decipher_map.get(ch, ch) for ch in ciphertext)
+
+if __name__ == "__main__":
+    keyword = "CIPHER"
+    cipher_map, decipher_map = generate_cipher_alphabet(keyword)
+    
+    plaintext = "HELLO WORLD"
+    ciphertext = encrypt(plaintext, cipher_map)
+    decrypted_text = decrypt(ciphertext, decipher_map)
+    
+    print(f"Plaintext: {plaintext}")
+    print(f"Ciphertext: {ciphertext}")
+    print(f"Decrypted: {decrypted_text}")
